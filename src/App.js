@@ -18,7 +18,7 @@ class App extends Component {
   }
 
   componentDidMount(){
-    var ws = new WebSocket('ws://localhost:6001')
+    var ws = new WebSocket('ws://localhost:6003')
     this.setState((state) => (state.wss = ws))
 
 		/*
@@ -39,7 +39,7 @@ class App extends Component {
 
     ws.onopen = evt => {
       this.setState((state) => (state.wsstate = evt.type))
-			
+/*			
 			var addparms = JSON.stringify({
 			  COID: "789redcrossph789",
 				CampaignName: "XB Concert: A Fund-raising Event",
@@ -48,17 +48,18 @@ class App extends Component {
 				CampEndDate: "2018-09-20T18:55:05Z08:00",
 				Status: 1,
 				CampaignAmount: 1000000
-			})
+			})*/
 
 			var queryparms = JSON.stringify({
-			    COID: "789redcrossph789",
-					Status: 1
+			    AID: "c61d54e7-e0a8-4672-820a-4bc44620f95a",
+			    Status: "PLEDGE"
 			})
 
       var msg = JSON.stringify({
 				//type: "addCampaign",
-				AID: "789redcrossph789",
-				Type: "getCOCampaigns",
+				AID: "c61d54e7-e0a8-4672-820a-4bc44620f95a",
+				function: "getCOCampaigns",
+				type: "all_campaigns",
         //params:addparms
 				parms: queryparms
       })
@@ -70,6 +71,8 @@ class App extends Component {
     }
     
     ws.onmessage = evt => {
+      var obj = JSON.parse(evt.data)
+      console.log("function: "+obj.type)
       this.setState((state) => (state.wsdata = JSON.stringify(evt.data)))
     }
   }
